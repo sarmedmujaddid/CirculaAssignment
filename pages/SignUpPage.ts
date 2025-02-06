@@ -16,14 +16,12 @@ export class SignUpPage {
     readonly companyName: Locator;
     readonly dropdown: Locator;
     readonly listCount: Locator;
-    readonly searchField: Locator;
+    readonly selectedCountryField: Locator
     readonly errorMessage: Locator;
     readonly successMessage: Locator;
-    readonly noResultsMessage: Locator;
     readonly howDidDrop: Locator;
     readonly howDidYouHearDropdown: Locator;
     readonly submitButton: Locator;
-    readonly selectedCountryField: Locator
 
     constructor(page: Page) {
         this.page = page;
@@ -38,16 +36,14 @@ export class SignUpPage {
         this.phoneNumber = page.locator('input[name="phoneNumber"]');
         this.nextButton = page.getByRole('button', { name: 'Next step' });  
         this.companyName = page.locator('input[name="organizationName"]');
-        this.dropdown = page.locator("//input[@name = 'country']"); //
-        this.listCount = page.locator("//li[@role='option']"); //
-        this.searchField = page.locator('input[name="country"]');
+        this.dropdown = page.locator("//input[@name = 'country']"); 
+        this.listCount = page.locator("//li[@role='option']"); 
+        this.selectedCountryField = page.locator('input[name="country"]');
         this.errorMessage = page.locator('div[role="alert"]').filter({ hasText: 'Company registration country' });
         this.successMessage = page.locator('div').filter({ hasText: 'Great! Now please verify your email' });
-        this.noResultsMessage = page.locator('div[role="alert"] div.sc-b4bf297b-0');
         this.howDidDrop = page.locator('.sc-eb60ccfc-0.sc-6cdcdb5d-3.debbEH.dGIfiy').locator('svg').nth(1);
         this.howDidYouHearDropdown = page.locator("//div[@role='menuitemradio']");
-        this.submitButton = page.getByRole('button', { name: 'Create an account' });
-        this.selectedCountryField = page.locator('input[name="country"]');
+        this.submitButton = page.getByRole('submit', {name:'Create an account'});
 
     }
 
@@ -80,7 +76,7 @@ export class SignUpPage {
     async signupPartThree(company: string) {
         await this.companyName.fill(company);
         await this.howDidDrop.click({ force: true });
-        await this.howDidYouHearDropdown.first().click();
+        await this.howDidYouHearDropdown.nth(0).click();
     }
 
     async acceptTerms() {
@@ -91,7 +87,7 @@ export class SignUpPage {
         await this.dropdown.waitFor({ state: 'attached' });
         await this.dropdown.waitFor({ state: 'visible' });
         await this.dropdown.click({ force: true }); // Force click to bypass overlays
-        await this.page.waitForSelector("//li[@role='option']", { state: 'visible' });
+        //await this.page.waitForSelector("//li[@role='option']", { state: 'visible' });
     }
 
     async openDropdownInvalid() {
@@ -114,15 +110,17 @@ export class SignUpPage {
             // Check if the text matches the country you're looking for
             if (countryText === country) {
                 await countryOption.click({ force: true , await : '5000' });  // Click the matching country option
-                break;  // Exit the loop once the country is found
+                //break;  // Exit the loop once the country is found
             }
+            break;  // Exit the loop once the country is found
+
         }
     }
 
     async searchCountry(country: string) {
         await this.openDropdown();  // Open the dropdown
-        await this.searchField.fill(country);  // Type the country name
-        await this.searchField.press('Enter'); // Press Enter to select
+        await this.selectedCountryField.fill(country);  // Type the country name
+        await this.selectedCountryField.press('Enter'); // Press Enter to select
         await this.page.waitForTimeout(500);  // Wait for selection
     }
 

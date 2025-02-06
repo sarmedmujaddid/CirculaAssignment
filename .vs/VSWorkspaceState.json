@@ -2,9 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\pages",
-    "\\test",
-    "\\tests-examples"
+    "\\test"
   ],
-  "SelectedNode": "\\test\\dropdown.spec.ts",
+  "SelectedNode": "\\.gitignore",
   "PreviewInSolutionExplorer": false
 }

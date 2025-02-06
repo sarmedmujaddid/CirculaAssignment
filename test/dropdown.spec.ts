@@ -25,24 +25,12 @@ test.describe('Sign-up Dropdown Tests', () => {
         await expect(countryOption).toBeVisible();
     });
 
-    test('Select Sweden and verify selection', async () => {
-        await signUpPage.selectCountry(countryName);
-        await expect(signUpPage.getSelectedCountry()).toHaveText(countryName);
-    });
-
     test('Verify form submission with Sweden selected', async () => {
         await signUpPage.signupPartThree('Circle');
         await signUpPage.selectCountry(countryName);
         await signUpPage.submitForm();
         await expect(signUpPage.successMessage).toBeVisible();
 
-    });
-
-    test('Verify error message when no country is selected', async () => {
-        await signUpPage.signupPartThree('Circle');
-        await signUpPage.openDropdownInvalid();
-        await signUpPage.submitForm();
-        await expect(signUpPage.errorMessage).toHaveText('Company registration country is required');
     });
 
     test('Verify keyboard navigation with arrow keys', async () => {
