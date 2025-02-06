@@ -6,51 +6,64 @@ This project contains automated tests for the Circula sign-up page dropdown func
 
 ### Setup & Installation
 
-### Prerequisites
+#### Prerequisites
 
-Node.js (>= 16)
+- Node.js (>= 16)
 
-npm or yarn
+- npm or yarn
 
-Playwright installed globally
+- Playwright installed globally
 
 ## Installation Steps
 
-### Clone this repository:
+1. Clone this repository:
 
+```bash
 git clone https://github.com/sarmedmujaddid/CirculaAssignment.git
+```
 
-Navigate to the project directory:
+2. Navigate to the project directory:
 
+```
 cd CirculaAssignment
+```
 
-Install dependencies:
+3. Install dependencies:
 
+```
 npm install
+```
 
-Install Playwright browsers:
+4. Install Playwright browsers:
 
+```
 npx playwright install
+```
 
-Running Tests
+### Running Tests
 
-Execute all tests
+#### Execute all tests
 
+```
 npx playwright test
+```
 
-Run tests with UI mode
+#### Run tests with UI mode
 
+```
 npx playwright test --ui
+```
 
-Run a specific test file
-
+#### Run a specific test file
+```
 npx playwright test test/dropdown.spec.ts
+```
 
-Test Scenarios
+### Test Scenarios
 
 The following test cases are implemented in test/dropdown.spec.ts:
 
-Verify Sweden appears in the dropdown list
+#### Verify Sweden appears in the dropdown list
 
 Open the sign-up page
 
@@ -60,15 +73,9 @@ Navigate to the dropdown
 
 Ensure "Sweden" is visible as an option
 
-Select Sweden and verify selection
 
-Open the dropdown
 
-Select "Sweden"
-
-Validate that the selected country is displayed correctly
-
-Verify form submission with Sweden selected
+#### Verify form submission with Sweden selected
 
 Complete the sign-up form
 
@@ -78,32 +85,27 @@ Submit the form
 
 Validate the success message appears
 
-Verify error message when no country is selected
 
-Attempt to submit the form without selecting a country
-
-Ensure the error message "Company registration country is required" is displayed
-
-Verify keyboard navigation with arrow keys
+#### Verify keyboard navigation with arrow keys
 
 Open the dropdown
 
-Navigate through the list using arrow keys
+Navigate through the list using the arrow keys
 
 Ensure options change as expected
 
-File Structure
+### File Structure
+```bash
 
-test/dropdown.spec.ts → Test cases for the dropdown
+playwright-project/
+│-- tests/              # Contains test specs
+│   ├── dropdownTest.spec.ts
+│-- pages/              # Page Object Model (POM) classes
+│   ├── SignUpPage.ts
+│-- playwright.config.ts # Configuration file
+│-- package.json        # Dependencies and scripts
+│-- tsconfig.json       # TypeScript config (if using TypeScript)
 
-pages/SignUpPage.ts → Page Object Model for sign-up page interactions
-
-playwright.config.ts → Playwright configuration
-
-Additional Notes
-
-The test execution requires access to the Circula QA Challenge Environment
-
-Ensure the website is accessible before running tests
+```
 
 Author: Sarmed MujaddidSubmission for: Circula QA Hiring Assignment 2025
