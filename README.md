@@ -108,4 +108,4 @@ playwright-project/
 
 ```
 
-Author: Sarmed MujaddidSubmission for: Circula QA Hiring Assignment 2025
+Author: Sarmed Ali Submission for: Circula QA Hiring Assignment 2025
