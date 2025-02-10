@@ -1,146 +1,182 @@
-// playwright/pages/SignUpPage.ts
+﻿// playwright/pages/SignUpPage.ts
 import { Page, Locator } from '@playwright/test';
 
 export class SignUpPage {
     readonly page: Page;
-    readonly consentAccept: Locator;
-    readonly signUp: Locator;
-    readonly workEmail: Locator;
-    readonly passWord: Locator;
-    readonly terms: Locator;
-    readonly signInbutton: Locator;
-    readonly firstName: Locator;
-    readonly lastName: Locator;
-    readonly phoneNumber: Locator;
-    readonly nextButton: Locator;
-    readonly companyName: Locator;
-    readonly dropdown: Locator;
-    readonly listCount: Locator;
-    readonly selectedCountryField: Locator
-    readonly errorMessage: Locator;
-    readonly successMessage: Locator;
-    readonly howDidDrop: Locator;
-    readonly howDidYouHearDropdown: Locator;
-    readonly submitButton: Locator;
+    readonly acceptAllConsentButton: Locator;
+    readonly startFreeTrialLink: Locator;
+    readonly workEmailField: Locator;
+    readonly passwordField: Locator;
+    readonly termsCheckbox: Locator;
+    readonly tryForFreeButton: Locator;
+    readonly firstNameField: Locator;
+    readonly lastNameField: Locator;
+    readonly phoneNumberField: Locator;
+    readonly nextStepButton: Locator;
+    readonly companyNameField: Locator;
+    readonly countryField: Locator;
+    readonly countryOptionList: Locator;
+    readonly errorMessageCountryRequired: Locator;
+    readonly errorMessageNoCountryFound: Locator;
+    readonly successMessageEmailSent: Locator;
+    readonly howDidYouHearField: Locator;
+    readonly howDidYouHearOptions: Locator;
+    readonly completeSignUpButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
-        this.consentAccept = page.getByTestId('uc-accept-all-button');
-        this.signUp = page.getByRole('link', { name: 'Start a free trial' });
-        this.workEmail = page.getByRole('textbox', { name: 'Work email' });
-        this.passWord = page.getByRole('textbox', { name: 'Password Show password' });
-        this.terms = page.locator('input[name="acceptTos"]'); // - working
-        this.signInbutton = page.getByRole('button').filter({ hasText: 'Try for free' });
-        this.firstName = page.getByRole('textbox', { name: 'First name' });   
-        this.lastName = page.getByRole('textbox', { name: 'Last name' });
-        this.phoneNumber = page.locator('input[name="phoneNumber"]');
-        this.nextButton = page.getByRole('button', { name: 'Next step' });  
-        this.companyName = page.locator('input[name="organizationName"]');
-        this.dropdown = page.locator("//input[@name = 'country']"); 
-        this.listCount = page.locator("//li[@role='option']"); 
-        this.selectedCountryField = page.locator('input[name="country"]');
-        this.errorMessage = page.locator('div[role="alert"]').filter({ hasText: 'Company registration country' });
-        this.successMessage = page.locator('div').filter({ hasText: 'Great! Now please verify your email' });
-        this.howDidDrop = page.locator('.sc-eb60ccfc-0.sc-6cdcdb5d-3.debbEH.dGIfiy').locator('svg').nth(1);
-        this.howDidYouHearDropdown = page.locator("//div[@role='menuitemradio']");
-        this.submitButton = page.getByRole('submit', {name:'Create an account'});
 
+        this.acceptAllConsentButton = page.getByTestId('uc-accept-all-button');
+        this.startFreeTrialLink = page.getByRole('link', { name: 'Start a free trial' });
+        this.workEmailField = page.getByRole('textbox', { name: 'Work email' });
+        this.passwordField = page.locator('input[name="password"]');
+        this.termsCheckbox = page.locator('input[name="acceptTos"]');
+        this.tryForFreeButton = page.getByRole('button', { name: 'Try for free' }); 
+
+        this.firstNameField = page.getByRole('textbox', { name: 'First name' });
+        this.lastNameField = page.getByRole('textbox', { name: 'Last name' });
+        this.phoneNumberField = page.locator('input[name="phoneNumber"]');
+        this.nextStepButton = page.getByRole('button', { name: 'Next step' });
+
+        this.companyNameField = page.locator('input[name="organizationName"]');
+        this.countryField = page.locator('//input[@id="downshift-:r4:-input"]'); 
+        this.countryOptionList = page.locator("//li[@role='option']");
+
+        this.errorMessageCountryRequired = page.locator('div[role="alert"]', { hasText: "Company registration country is required" });
+        this.errorMessageNoCountryFound = page.locator('//div[text()="Can’t find your country?"]'); 
+        this.successMessageEmailSent = page.locator('div[role="alert"]:has-text("verify your email")');
+
+        this.howDidYouHearField = page.locator('input[value="Choose channel"]');
+        this.howDidYouHearOptions = page.locator('//div[@role="menuitemradio"]'); 
+        this.completeSignUpButton = page.getByRole('button', { name: /Create an account/i });
     }
 
     async goto() {
         await this.page.goto('/users/sign_in');
     }
 
-    async acceptConsent() {
-        await this.consentAccept.click();
+    async clickAcceptAllConsentButton() {
+        await this.acceptAllConsentButton.click();
     }
 
-    async startSignUp() {
-        await this.signUp.click();
+    async clickTermsCheckbox() {
+        await this.termsCheckbox.click();
     }
 
-    async signupPartOne(email: string, password: string) {
-        await this.workEmail.fill(email);
-        await this.passWord.fill(password);
-        await this.terms.click({ force: true });
-        await this.signInbutton.click();
+    async clickStartFreeTrialLink() {
+        await this.startFreeTrialLink.click();
     }
 
-    async signupPartTwo(firstname: string, lastname: string, phonenumber: string) {
-        await this.firstName.fill(firstname);
-        await this.lastName.fill(lastname);
-        await this.phoneNumber.fill(phonenumber);
-        await this.nextButton.click();
+    async completeSignUp() {
+        await this.completeSignUpButton.click();
     }
 
-    async signupPartThree(company: string) {
-        await this.companyName.fill(company);
-        await this.howDidDrop.click({ force: true });
-        await this.howDidYouHearDropdown.nth(0).click();
+    async fillCountryField(country: string) {
+        await this.countryField.fill(country);
     }
 
-    async acceptTerms() {
-        await this.terms.click();
+    async fillSignUpFormPartOne(email: string, password: string) {
+        await this.workEmailField.fill(email);
+        await this.passwordField.fill(password);
+        await this.termsCheckbox.click({ force: true });
+        await this.tryForFreeButton.click();
     }
 
-    async openDropdown() {
-        await this.dropdown.waitFor({ state: 'attached' });
-        await this.dropdown.waitFor({ state: 'visible' });
-        await this.dropdown.click({ force: true }); // Force click to bypass overlays
-        //await this.page.waitForSelector("//li[@role='option']", { state: 'visible' });
+    async fillSignUpFormPartTwo(firstname: string, lastname: string, phonenumber: string, company: string) {
+        await this.firstNameField.fill(firstname);
+        await this.lastNameField.fill(lastname);
+        await this.phoneNumberField.fill(phonenumber);
+        await this.nextStepButton.click();
+        await this.companyNameField.fill(company);
     }
 
-    async openDropdownInvalid() {
-        await this.dropdown.click({ force: true });
-        await this.searchCountry('');
+    async openCountryDropdown() {
+        await this.countryField.waitFor({ state: 'visible', timeout: 5000 }); 
+        await this.countryField.click({ force: true });
+
+        await this.page.waitForSelector("li[role='option']", { state: 'visible' });
     }
 
-    async selectCountry(country: string) {
+    // Retrieve the current value from the country field
+    async getCountryFieldValue(): Promise<string> {
+        
+        // Ensure the countryField field is available
+        await this.countryField.waitFor({ state: 'visible', timeout: 5000 });
 
-        await this.openDropdown();
-        // Get the list of country options
-        const countryList = await this.page.locator("//li[@role='option']");
-        const listCount = await countryList.count(); // Get the number of options
+         // Retrieve the current value from the input field
+         const selectedCountry = await this.countryField.inputValue();
 
-        // Iterate through the options to find the correct country
-        for (let i = 0; i <= listCount; i++) {
-            const countryOption = countryList.nth(i);
-            const countryText = await countryOption.innerText(); // Get the text of the country option
+         //console.log(`✅ Retrieved selected country: ${selectedCountry}`);
+          return selectedCountry;
+    }
 
-            // Check if the text matches the country you're looking for
-            if (countryText === country) {
-                await countryOption.click({ force: true , await : '5000' });  // Click the matching country option
-                //break;  // Exit the loop once the country is found
+    async getCountryOptionCount(): Promise<number> {
+        await this.countryField.click();
+        await this.countryOptionList.first().waitFor({ state: 'visible', });
+        const count = await this.countryOptionList.count();
+
+        //console.log(`📌 Total countryField options: ${count}`);
+        return count;
+
+    }
+
+    async isCountryListed(country: string): Promise<boolean> {
+        const count = await this.countryOptionList.count();
+        for (let i = 0; i < count; i++) {
+            const option = await this.countryOptionList.nth(i);
+
+            await option.waitFor({ state: 'attached', timeout: 3000 });
+
+            const text = await option.textContent();
+            //console.log(`🔹 Option ${i}: ${text.trim()}`);
+
+            if (text?.trim() === country) {
+                //console.log(`✅ Country "${country}" found in countryField!`);
+                return true;
             }
-            break;  // Exit the loop once the country is found
-
         }
+        console.log(`❌ Country "${country}" NOT found in the countryField.`);
+        return false;
     }
 
-    async searchCountry(country: string) {
-        await this.openDropdown();  // Open the dropdown
-        await this.selectedCountryField.fill(country);  // Type the country name
-        await this.selectedCountryField.press('Enter'); // Press Enter to select
-        await this.page.waitForTimeout(500);  // Wait for selection
+    async resetCountryField() {
+        await this.countryField.click({ force: true });
+
+        for (let i = 0; i < 10; i++) {
+            await this.page.keyboard.press('Backspace');
+        }
+        await this.page.keyboard.press('Enter');
+        await this.page.keyboard.press('Tab');
     }
 
-    async getDropdownOption(country: string) {
-        const optionLocator = this.page.locator(`li[role="option"]:has-text("${country}")`);
-        await optionLocator.waitFor({ state: 'attached' });
-        await optionLocator.waitFor({ state: 'visible' });
-        return optionLocator;
+    async selectCountryOption(country: string) {
+        //console.log(`🔄 Opening the countryField...`);
+        await this.countryField.click({ force: true });
 
+        //console.log(`🔄 Waiting for options to be visible...`);
+        await this.page.waitForSelector("li[role='option']", { state: 'visible', timeout: 5000 });
+
+        const countryOption = await this.countryField.fill(country);
+        await this.page.keyboard.press('Enter');
+
+         // Move focus to the next field
+         await this.page.keyboard.press('Tab');
     }
 
-    async getSelectedCountry() {
-        return this.dropdown.inputValue();
+    async selectHowDidYouHearOption(hear: string) {
+        await this.page.mouse.move(0, 0); // Move mouse away
+        await this.howDidYouHearField.click({ force: true });
+
+        const option = this.page.locator(`//div[@role="menuitemradio" and @data-valuetext="${hear}"]`);
+
+        //await option.waitFor({ state: 'visible', timeout: 5000 });
+
+        // Click to select the option
+        await option.click({ force: true });
     }
 
-    async submitForm() {
-        await this.submitButton.click();
-    }
 
-    async navigateWithArrowKeys(times: number) {
+    async navigateDropdownWithArrowKeys(times: number) {
         for (let i = 0; i < times; i++) {
             await this.page.keyboard.press('ArrowDown');
         }
