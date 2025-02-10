@@ -32,10 +32,12 @@ test.describe('Sign-up Dropdown Tests', () => {
 
     test('Verify sign up form submission with Sweden as country selected', async () => {
         await signUpPage.selectCountryOption(countryName);
-        await signUpPage.selectHowDidYouHearOption('Search Engine (Google, Bing, etc.)');
 
         const selectedCountry = await signUpPage.getCountryFieldValue();
         await expect(selectedCountry.trim()).toBe(countryName);
+
+        await signUpPage.selectHowDidYouHearOption('Search Engine (Google, Bing, etc.)');
+
 
         //Submit form and validate success message
         await signUpPage.completeSignUp();

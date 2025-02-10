@@ -13,14 +13,13 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install chromium --with-deps
-    - name: Run Playwright tests with increased timeout    
-      run: npx playwright test --timeout=30000
-    - name: Run Playwright tests in headless mode
-      run: npx playwright test --headed=false
+    - name: Run Playwright tests (headless mode)    
+      run: npx playwright test --headless --timeout=30000
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

@@ -97,7 +97,7 @@ export class SignUpPage {
         await this.page.waitForSelector("li[role='option']", { state: 'visible' });
     }
 
-    // Retrieve the current value from the country field
+    // Retrieve the current value from the country field dropdown
     async getCountryFieldValue(): Promise<string> {
         
         // Ensure the countryField field is available
@@ -122,6 +122,7 @@ export class SignUpPage {
 
     async isCountryListed(country: string): Promise<boolean> {
         const count = await this.countryOptionList.count();
+        //console.log(`📌 Total countryField options: ${count}`);
         for (let i = 0; i < count; i++) {
             const option = await this.countryOptionList.nth(i);
 
@@ -154,7 +155,7 @@ export class SignUpPage {
         await this.countryField.click({ force: true });
 
         //console.log(`🔄 Waiting for options to be visible...`);
-        await this.page.waitForSelector("li[role='option']", { state: 'visible', timeout: 5000 });
+        //await this.page.waitForSelector("li[role='option']", { state: 'visible', timeout: 5000 });
 
         const countryOption = await this.countryField.fill(country);
         await this.page.keyboard.press('Enter');
